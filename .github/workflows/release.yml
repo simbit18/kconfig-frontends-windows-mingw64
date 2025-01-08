@@ -50,12 +50,18 @@ jobs:
           cd kconfig-frontends-win
           cmake -B build -GNinja
           cmake --build build
-          mkdir kconfig-frontends-windows-mingw64
-          cp build/bin/kconfig-mconf.exe kconfig-frontends-windows-mingw64/kconfig-mconf.exe
-          cp build/bin/kconfig-conf.exe kconfig-frontends-windows-mingw64/kconfig-conf.exe
-          cp utils/kconfig-tweak.bat kconfig-frontends-windows-mingw64/kconfig-tweak.bat
-          cp /mingw64/bin/libsystre-0.dll kconfig-frontends-windows-mingw64/libsystre-0.dll
-          cp /mingw64/bin/libtre-5.dll kconfig-frontends-windows-mingw64/libtre-5.dll
+          mkdir -p kconfig-frontends-windows-mingw64/bin
+          cp build/bin/kconfig-mconf.exe kconfig-frontends-windows-mingw64/bin/kconfig-mconf.exe
+          cp build/bin/kconfig-conf.exe kconfig-frontends-windows-mingw64/bin/kconfig-conf.exe
+          cp utils/kconfig-tweak.bat kconfig-frontends-windows-mingw64/bin/kconfig-tweak.bat
+          cp /mingw64/bin/libiconv-2.dll kconfig-frontends-windows-mingw64/bin/libiconv-2.dll
+          cp /mingw64/bin/libintl-8.dll kconfig-frontends-windows-mingw64/bin/libintl-8.dll
+          cp /mingw64/bin/libsystre-0.dll kconfig-frontends-windows-mingw64/bin/libsystre-0.dll
+          cp /mingw64/bin/libtre-5.dll kconfig-frontends-windows-mingw64/bin/libtre-5.dll
+          cp ../../tools/kconfig-tweak.ps1 kconfig-frontends-windows-mingw64/bin/kconfig-tweak.ps1
+          mkdir -p kconfig-frontends-windows-mingw64/share/doc
+          cp docs/kconfig.txt kconfig-frontends-windows-mingw64/share/doc/kconfig.txt
+          cp docs/kconfig-language.txt kconfig-frontends-windows-mingw64/share/doc/kconfig-language.txt
           zip -r kconfig-frontends-windows-mingw64.zip kconfig-frontends-windows-mingw64
 
       - name: Publish the GitHub Release

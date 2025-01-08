@@ -1,0 +1,84 @@
+mainmenu "Test Kconfig"
+
+choice
+	prompt "Build Host Platform"
+	default HOST_WINDOWS
+
+config HOST_LINUX
+	bool "Linux"
+
+config HOST_MACOS
+	bool "macOS"
+
+config HOST_WINDOWS
+	bool "Windows"
+
+config HOST_OTHER
+	bool "Other"
+
+endchoice # Build Host Platform
+
+
+if HOST_WINDOWS
+
+config TOOLCHAIN_WINDOWS
+	bool
+	default n
+	---help---
+		Selected internally if the selected Windows environment is compatible
+		with the use of Windows native toolchains.
+
+choice
+	prompt "Toolchain Windows"
+	default TOOLCHAIN_MINGW64
+
+config TOOLCHAIN_MINGW64
+	bool "MinGW64"
+	---help---
+		GNU toolchain 64-bit.
+
+config TOOLCHAIN_MINGW32
+	bool "MinGW32"
+	---help---
+		GNU toolchain 32-bit.
+
+config TOOLCHAIN_CLANG
+	bool "Clang"
+	---help---
+		Clang toolchain.
+
+config TOOLCHAIN_MSVC
+	bool "MSVC"
+	---help---
+		MSVC toolchain.
+
+endchoice # Toolchain Windows
+
+
+choice
+	prompt "Windows Build Environment"
+	default WINDOWS_NATIVE
+
+config WINDOWS_NATIVE
+	bool "Windows Native"
+	select TOOLCHAIN_WINDOWS
+	---help---
+		Build natively in a CMD.exe environment.
+
+config WINDOWS_CYGWIN
+	bool "Cygwin"
+	depends on !TOOLCHAIN_MSVC
+	select TOOLCHAIN_WINDOWS
+	---help---
+		Build natively in a Cygwin environment.
+
+config WINDOWS_MSYS2
+	bool "MSYS2
+	depends on !TOOLCHAIN_MSVC
+	select TOOLCHAIN_WINDOWS
+	---help---
+		Build natively in a MSYS2 environment.
+
+endchoice # Windows Build Environment
+
+endif # HOST_WINDOWS
