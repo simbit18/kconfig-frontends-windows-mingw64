@@ -53,12 +53,13 @@ jobs:
           mkdir -p kconfig-frontends-windows-mingw64/bin
           cp build/bin/kconfig-mconf.exe kconfig-frontends-windows-mingw64/bin/kconfig-mconf.exe
           cp build/bin/kconfig-conf.exe kconfig-frontends-windows-mingw64/bin/kconfig-conf.exe
-          cp utils/kconfig-tweak.bat kconfig-frontends-windows-mingw64/bin/kconfig-tweak.bat
+          # cp utils/kconfig-tweak.bat kconfig-frontends-windows-mingw64/bin/kconfig-tweak.bat
           cp /mingw64/bin/libiconv-2.dll kconfig-frontends-windows-mingw64/bin/libiconv-2.dll
           cp /mingw64/bin/libintl-8.dll kconfig-frontends-windows-mingw64/bin/libintl-8.dll
           cp /mingw64/bin/libsystre-0.dll kconfig-frontends-windows-mingw64/bin/libsystre-0.dll
           cp /mingw64/bin/libtre-5.dll kconfig-frontends-windows-mingw64/bin/libtre-5.dll
           cp ../../tools/kconfig-tweak.ps1 kconfig-frontends-windows-mingw64/bin/kconfig-tweak.ps1
+          cp ../../tools/kconfig-tweak.bat kconfig-frontends-windows-mingw64/bin/kconfig-tweak.bat
           mkdir -p kconfig-frontends-windows-mingw64/share/doc
           cp docs/kconfig.txt kconfig-frontends-windows-mingw64/share/doc/kconfig.txt
           cp docs/kconfig-language.txt kconfig-frontends-windows-mingw64/share/doc/kconfig-language.txt
