@@ -1,0 +1,77 @@
+name: dev
+
+permissions:
+  ## Allow publishing of GitHub Dev
+  contents: write
+on: 
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/dev.yml'
+
+jobs:
+  kconfig-msys2-dev-mingw64:
+    runs-on: windows-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        msystem:
+          - MINGW64
+    defaults:
+      run:
+        shell: msys2 {0}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: msys2/setup-msys2@v2
+        with:
+          msystem: ${{ matrix.msystem }}
+          update: false
+          install: >-
+            bison
+            flex
+            git
+            zip
+
+          pacboy: >-
+            cc:p
+            gperf:p
+            cmake:p
+            ninja:p
+            gcc-libs:p
+            gettext-tools:p
+            ncurses:p
+
+      - name: Checkout Source Files
+        run: |
+          echo 'Checkout Source Files'
+          mkdir kconfigspace
+          cd kconfigspace
+          git clone --single-branch --branch msys2-mingw64 https://github.com/simbit18/kconfig-frontends-win.git
+          cd kconfig-frontends-win
+          cmake -B build -GNinja
+          cmake --build build
+          mkdir -p kconfig-frontends-windows-mingw64/bin
+          cp build/bin/kconfig-mconf.exe kconfig-frontends-windows-mingw64/bin/kconfig-mconf.exe
+          cp build/bin/kconfig-conf.exe kconfig-frontends-windows-mingw64/bin/kconfig-conf.exe
+          # cp utils/kconfig-tweak.bat kconfig-frontends-windows-mingw64/bin/kconfig-tweak.bat
+          cp /mingw64/bin/libiconv-2.dll kconfig-frontends-windows-mingw64/bin/libiconv-2.dll
+          cp /mingw64/bin/libintl-8.dll kconfig-frontends-windows-mingw64/bin/libintl-8.dll
+          cp /mingw64/bin/libsystre-0.dll kconfig-frontends-windows-mingw64/bin/libsystre-0.dll
+          cp /mingw64/bin/libtre-5.dll kconfig-frontends-windows-mingw64/bin/libtre-5.dll
+          cp ../../tools/kconfig-tweak.ps1 kconfig-frontends-windows-mingw64/bin/kconfig-tweak.ps1
+          cp ../../tools/kconfig-tweak.bat kconfig-frontends-windows-mingw64/bin/kconfig-tweak.bat
+          cp ../../tools/kconfig-tweak kconfig-frontends-windows-mingw64/bin/kconfig-tweak
+          mkdir -p kconfig-frontends-windows-mingw64/share/doc
+          cp docs/kconfig.txt kconfig-frontends-windows-mingw64/share/doc/kconfig.txt
+          cp docs/kconfig-language.txt kconfig-frontends-windows-mingw64/share/doc/kconfig-language.txt
+          zip -r kconfig-frontends-windows-mingw64.zip kconfig-frontends-windows-mingw64
+
+      - name: Publish the GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: kconfig-frontends-dev-4.11.1
+          draft: false
+          prerelease: false
+          generate_release_notes: false
+          files: |
+            kconfigspace/kconfig-frontends-win/kconfig-frontends-windows-dev-mingw64.zip
