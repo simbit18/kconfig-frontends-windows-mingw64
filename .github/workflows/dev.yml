@@ -9,6 +9,10 @@ on:
     paths:
       - '.github/workflows/dev.yml'
 
+env:
+  STORE_PATH: kconfig-frontends-windows-mingw64
+  KCONFIG_FRONTENDS_NAME: kconfig-frontends-windows-dev-mingw64
+
 jobs:
   kconfig-msys2-dev-mingw64:
     runs-on: windows-latest
@@ -50,21 +54,21 @@ jobs:
           cd kconfig-frontends-win
           cmake -B build -GNinja
           cmake --build build
-          mkdir -p kconfig-frontends-windows-mingw64/bin
-          cp build/bin/kconfig-mconf.exe kconfig-frontends-windows-mingw64/bin/kconfig-mconf.exe
-          cp build/bin/kconfig-conf.exe kconfig-frontends-windows-mingw64/bin/kconfig-conf.exe
-          # cp utils/kconfig-tweak.bat kconfig-frontends-windows-mingw64/bin/kconfig-tweak.bat
-          cp /mingw64/bin/libiconv-2.dll kconfig-frontends-windows-mingw64/bin/libiconv-2.dll
-          cp /mingw64/bin/libintl-8.dll kconfig-frontends-windows-mingw64/bin/libintl-8.dll
-          cp /mingw64/bin/libsystre-0.dll kconfig-frontends-windows-mingw64/bin/libsystre-0.dll
-          cp /mingw64/bin/libtre-5.dll kconfig-frontends-windows-mingw64/bin/libtre-5.dll
-          cp ../../tools/kconfig-tweak.ps1 kconfig-frontends-windows-mingw64/bin/kconfig-tweak.ps1
-          cp ../../tools/kconfig-tweak.bat kconfig-frontends-windows-mingw64/bin/kconfig-tweak.bat
-          cp ../../tools/kconfig-tweak kconfig-frontends-windows-mingw64/bin/kconfig-tweak
-          mkdir -p kconfig-frontends-windows-mingw64/share/doc
-          cp docs/kconfig.txt kconfig-frontends-windows-mingw64/share/doc/kconfig.txt
-          cp docs/kconfig-language.txt kconfig-frontends-windows-mingw64/share/doc/kconfig-language.txt
-          zip -r kconfig-frontends-windows-mingw64.zip kconfig-frontends-windows-mingw64
+          mkdir -p ${{ env.STORE_PATH }}/bin
+          cp build/bin/kconfig-mconf.exe ${{ env.STORE_PATH }}/bin/kconfig-mconf.exe
+          cp build/bin/kconfig-conf.exe ${{ env.STORE_PATH }}/bin/kconfig-conf.exe
+          # cp utils/kconfig-tweak.bat ${{ env.STORE_PATH }}/bin/kconfig-tweak.bat
+          cp /mingw64/bin/libiconv-2.dll ${{ env.STORE_PATH }}/bin/libiconv-2.dll
+          cp /mingw64/bin/libintl-8.dll ${{ env.STORE_PATH }}/bin/libintl-8.dll
+          cp /mingw64/bin/libsystre-0.dll ${{ env.STORE_PATH }}/bin/libsystre-0.dll
+          cp /mingw64/bin/libtre-5.dll ${{ env.STORE_PATH }}/bin/libtre-5.dll
+          cp ../../tools/kconfig-tweak.ps1 ${{ env.STORE_PATH }}/bin/kconfig-tweak.ps1
+          cp ../../tools/kconfig-tweak.bat ${{ env.STORE_PATH }}/bin/kconfig-tweak.bat
+          cp ../../tools/kconfig-tweak ${{ env.STORE_PATH }}/bin/kconfig-tweak
+          mkdir -p ${{ env.STORE_PATH }}/share/doc
+          cp docs/kconfig.txt ${{ env.STORE_PATH }}/share/doc/kconfig.txt
+          cp docs/kconfig-language.txt ${{ env.STORE_PATH }}/share/doc/kconfig-language.txt
+          zip -r ${{ env.KCONFIG_FRONTENDS_NAME }}.zip ${{ env.KCONFIG_FRONTENDS_NAME }}
 
       - name: Publish the GitHub Release
         uses: softprops/action-gh-release@v2
@@ -74,4 +78,4 @@ jobs:
           prerelease: false
           generate_release_notes: false
           files: |
-            kconfigspace/kconfig-frontends-win/kconfig-frontends-windows-dev-mingw64.zip
+            kconfigspace/kconfig-frontends-win/${{ env.KCONFIG_FRONTENDS_NAME }}.zip
