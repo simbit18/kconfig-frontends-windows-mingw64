@@ -68,7 +68,7 @@ jobs:
           mkdir -p ${{ env.STORE_PATH }}/share/doc
           cp docs/kconfig.txt ${{ env.STORE_PATH }}/share/doc/kconfig.txt
           cp docs/kconfig-language.txt ${{ env.STORE_PATH }}/share/doc/kconfig-language.txt
-          zip -r ${{ env.KCONFIG_FRONTENDS_NAME }}.zip ${{ env.KCONFIG_FRONTENDS_NAME }}
+          zip -r ${{ env.KCONFIG_FRONTENDS_NAME }}.zip ${{ env.STORE_PATH }}
 
       - name: Publish the GitHub Release
         uses: softprops/action-gh-release@v2
