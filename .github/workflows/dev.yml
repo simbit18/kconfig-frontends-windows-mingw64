@@ -46,7 +46,7 @@ jobs:
           echo 'Checkout Source Files'
           mkdir kconfigspace
           cd kconfigspace
-          git clone --single-branch --branch msys2-mingw64 https://github.com/simbit18/kconfig-frontends-win.git
+          git clone --single-branch --branch msys2-dev-mingw64 https://github.com/simbit18/kconfig-frontends-win.git
           cd kconfig-frontends-win
           cmake -B build -GNinja
           cmake --build build
